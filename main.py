@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
+from typing import Optional
 
 app = FastAPI()
 
@@ -11,6 +12,10 @@ class Movie(BaseModel):
     rating: int = Field(gt=3, lt=10)
 
 Movies = []
+
+@app.get('/greet')
+async def greet_user(name: Optional[str] = "User", age: int =20) -> dict:
+    return {"message": f"Hello, {name}", "age": age }
 
 @app.get('/')
 def greeting():

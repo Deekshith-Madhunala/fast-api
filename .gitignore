@@ -1,0 +1,20 @@
+# Ignore PyCharm-specific files and folders
+.idea/
+*.iml
+
+# Byte-compiled files
+__pycache__/
+*.pyc
+*.pyo
+
+# Environment files
+.env
+.venv/
+venv/
+
+# Ignore log and system files
+*.log
+*.DS_Store
+__pycache__/main.cpython-313.pyc
+/__pycache__
+*.pyc
