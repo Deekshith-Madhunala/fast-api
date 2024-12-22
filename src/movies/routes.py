@@ -1,32 +1,39 @@
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, Field
+from fastapi import APIRouter, HTTPException
+
 from typing import Optional
+from src.movies.movies_data import Movies
+from src.movies.schemas import Movie
 
-app = FastAPI()
+movie_router = APIRouter()
 
-class Movie(BaseModel):
-    id: int = Field()
-    title: str = Field(min_length=1)
-    description: str = Field(min_length=10)
-    release_year: int = Field(gt=1900)
-    rating: int = Field(gt=3, lt=10)
 
-Movies = []
+@movie_router.get('/greet')
+async def greet_user(name: Optional[str] = "User", age: int = 20) -> dict:
+    return {"message": f"Hello, {name}", "age": age}
 
-@app.get('/greet')
-async def greet_user(name: Optional[str] = "User", age: int =20) -> dict:
-    return {"message": f"Hello, {name}", "age": age }
 
-@app.get('/')
-def greeting():
+@movie_router.get('/')
+def get_movies():
     return Movies
 
-@app.post('/')
+
+@movie_router.get('/{movie_id}')
+async def get_movie(movie_id: int):
+    for x in Movies:
+        if x.id == movie_id:
+            return x
+    raise HTTPException(
+        status_code=404, detail=f"Movie with id: {movie_id} not found"
+    )
+
+
+@movie_router.post('/')
 def create_movie(movie: Movie):
-    Movies.append(movie)
+    Movies.movie_routerend(movie)
     return movie
 
-@app.delete('/{movie_id}')
+
+@movie_router.delete('/{movie_id}')
 def delete_movie(movie_id: int):
     for index, x in enumerate(Movies):
         if x.id == movie_id:
@@ -36,7 +43,8 @@ def delete_movie(movie_id: int):
         status_code=404, detail=f"Movie with id: {movie_id} not found"
     )
 
-@app.put('/{movie_id}')
+
+@movie_router.put('/{movie_id}')
 def update_movie(movie_id: int, movie: Movie):
     for index, x in enumerate(Movies):
         print(f"Checking movie with id {x.id} against {movie_id}")
