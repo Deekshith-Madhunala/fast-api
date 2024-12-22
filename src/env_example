@@ -1,0 +1,5 @@
+
+# Create a new .env file with the given fields using your own credentials
+# This is a sample environment file that will be a replication of the .env file
+
+DATABASE_URL = postgresql+asyncpg://USERNAME:PASSWORD@localhost:5432/YOUR_DATABASE_NAME
