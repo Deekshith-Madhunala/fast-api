@@ -1,9 +1,16 @@
-from pydantic import BaseModel, Field
-
+import uuid
+from datetime import datetime
+from pydantic import BaseModel
 
 class Movie(BaseModel):
-    id: int = Field()
-    title: str = Field(min_length=1)
-    description: str = Field(min_length=10)
-    release_year: int = Field(gt=1900)
-    rating: int = Field(gt=3, lt=10)
+    id: uuid.UUID
+    title: str
+    description: str
+    director: str
+    runtime: int
+    genre: str
+    language: str
+    release_year: int
+    rating: int
+    created_at: datetime
+    updated_at: datetime
